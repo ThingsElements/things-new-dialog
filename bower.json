@@ -1,0 +1,17 @@
+{
+  "name": "things-new-dialog",
+  "homepage": "https://github.com/ThingsElements/things-new-dialog",
+  "authors": [
+    "c.s <chunseop@gmail.com>"
+  ],
+  "description": "use for things-label,things-point",
+  "main": "elements.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
