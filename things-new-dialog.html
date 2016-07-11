@@ -25,13 +25,13 @@
       </paper-textarea>
 
       <paper-dropdown-menu label="group"
-                           value="{{group}}"
+                           value="{{groupName}}"
                            vertical-align="top"
                            horizontal-align="left">
 
-        <paper-menu class="dropdown-content" selected="{{selectedGroup(group)}}">
-          <template is="dom-repeat" items="{{groups}}">
-            <paper-item>{{item.id}}: {{item.name}}</paper-item>
+        <paper-menu class="dropdown-content" selected="{{selectedGroup(groupName)}}">
+          <template is="dom-repeat" items="{{showGroups}}">
+            <paper-item>{{item.name}}</paper-item>
           </template>
         </paper-menu>
       </paper-dropdown-menu>
@@ -57,9 +57,24 @@
         properties: {
           group: {
             type: String,
-            notify: true
+            notify: true,
+            observer: 'onGroupChanged'
           },
           groups: {
+            notify: true,
+            observer: 'onGroupsChanged'
+          },
+
+          groupName: {
+            notify: true,
+          },
+
+          showGroups: {
+            type: Array,
+            notify: true
+          },
+
+          showPlayGroup: {
             notify: true
           },
 
@@ -95,6 +110,38 @@
         created: function() {
         },
 
+        onGroupChanged(group) {
+          if(!this.groups)
+            return
+
+          if (!group) return;
+
+          for(var i = 0;i < this.groups.length;i++) {
+            if(this.groups[i].id == group) {
+              this.groupName = this.groups[i].name;
+              return i;
+            }
+          }
+        },
+
+        onGroupsChanged(groups) {
+          if (this.showPlayGroup) {
+            this.showGroups = groups;
+            return;
+          }
+
+          var showGroups = [];
+          groups.forEach(function(g) {
+            if (g.category !== 'PLAY') {
+              showGroups.push(g)
+            }
+          });
+
+          this.showGroups = showGroups;
+
+          this.onGroupChanged(this.group);
+        },
+
         computeObject(name, description, group, width, height, tags) {
           if (!group) return;
 
@@ -111,10 +158,17 @@
             variables: []
           }
 
+          var groupId;
+          for(var i = 0;i < this.groups.length; i++) {
+            if(this.groups[i].name === this.groupName) {
+              groupId = this.groups[i].id;
+            }
+          }
+
           return {
             name: name,
             description: description,
-            label_group_id: parseInt(group.split(':')[0]),
+            label_group_id: groupId,
             width: width * scale || 1200,
             height: height * scale || 800,
             tags: tags,
@@ -127,15 +181,16 @@
           var dialog = this.$["new"].open();
         },
 
-        selectedGroup: function(group) {
+        selectedGroup: function(groupName) {
           if(!this.groups)
             return
 
+          if (!groupName) return;
+
           for(var i = 0;i < this.groups.length;i++) {
-            if (!group) return;
-            /* string과 number간의 type coertion이 필요하므로, == 로 비교 */
-            if(this.groups[i].id == group.split(':')[0])
-              return i
+            if(this.groups[i].name == groupName) {
+              return i;
+            }
           }
         }
 
