@@ -125,6 +125,10 @@
         },
 
         onGroupsChanged(groups) {
+          if (!groups) {
+            return;
+          }
+
           if (this.showPlayGroup) {
             this.showGroups = groups;
             return;
