@@ -5,26 +5,34 @@
 <link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="../paper-dialog/paper-dialog.html">
 
+<link rel="import" href="../things-i18n-msg/things-i18n-msg.html">
+
 <dom-module id="things-new-dialog">
   <template>
+    <style></style>
 
-    <style>
-    </style>
+    <things-i18n-msg msgid="label.name" msg="{{labelName}}" auto hidden>Name</things-i18n-msg>
+    <things-i18n-msg msgid="label.description" msg="{{labelDesc}}" auto hidden>Description</things-i18n-msg>
+    <things-i18n-msg msgid="label.group" msg="{{labelGroup}}" auto hidden>Group</things-i18n-msg>
+    <things-i18n-msg msgid="label.width" msg="{{labelWidth}}" auto hidden>Width</things-i18n-msg>
+    <things-i18n-msg msgid="label.height" msg="{{labelHeight}}" auto hidden>Height</things-i18n-msg>
+    <things-i18n-msg msgid="label.tag" msg="{{labelTag}}" auto hidden>Tag</things-i18n-msg>
+
     <paper-dialog id="new">
       <h2>[[title]]</h2>
       
-      <paper-input label="name"
+      <paper-input label="[[labelName]]"
                    value="{{name::input}}"
                    auto-validate
                    pattern="[a-zA-Z-0-9]*"
                    error-message="letters & dash only!">
       </paper-input>
 
-      <paper-textarea label="description"
+      <paper-textarea label="[[labelDesc]]"
                       value="{{description::input}}">
       </paper-textarea>
 
-      <paper-dropdown-menu label="group"
+      <paper-dropdown-menu label="[[labelGroup]]"
                            value="{{groupName}}"
                            vertical-align="top"
                            horizontal-align="left">
@@ -36,13 +44,13 @@
         </paper-menu>
       </paper-dropdown-menu>
 
-      <paper-input label="width" type="number" value="{{width::input}}"></paper-input>
-      <paper-input label="height" type="number" value="{{height::input}}"></paper-input>
-      <paper-input label="tags" type="string" value="{{tags::input}}"></paper-input>
+      <paper-input label="[[labelWidth]]" type="number" value="{{width::input}}"></paper-input>
+      <paper-input label="[[labelHeight]]" type="number" value="{{height::input}}"></paper-input>
+      <paper-input label="[[labelTag]]" type="string" value="{{tags::input}}"></paper-input>
 
       <div class="buttons">
-        <paper-button dialog-dismiss>Cancel</paper-button>
-        <paper-button dialog-confirm autofocus>Create</paper-button>
+        <paper-button dialog-dismiss><things-i18n-msg msgid="button.cancel" auto>Cancel</things-i18n-msg></paper-button>
+        <paper-button dialog-confirm autofocus><things-i18n-msg msgid="button.create" auto>Create</things-i18n-msg></paper-button>
       </div>
     <paper-dialog>
   </template>
