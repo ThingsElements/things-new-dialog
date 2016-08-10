@@ -8,205 +8,202 @@
 <link rel="import" href="../things-i18n-msg/things-i18n-msg.html">
 
 <dom-module id="things-new-dialog">
-  <template>
-    <style></style>
+    <template>
+        <style></style>
 
-    <things-i18n-msg msgid="label.name" msg="{{labelName}}" auto hidden>Name</things-i18n-msg>
-    <things-i18n-msg msgid="label.description" msg="{{labelDesc}}" auto hidden>Description</things-i18n-msg>
-    <things-i18n-msg msgid="label.group" msg="{{labelGroup}}" auto hidden>Group</things-i18n-msg>
-    <things-i18n-msg msgid="label.width" msg="{{labelWidth}}" auto hidden>Width</things-i18n-msg>
-    <things-i18n-msg msgid="label.height" msg="{{labelHeight}}" auto hidden>Height</things-i18n-msg>
-    <things-i18n-msg msgid="label.tag" msg="{{labelTag}}" auto hidden>Tag</things-i18n-msg>
+        <things-i18n-msg msgid="label.name" msg="{{labelName}}" auto hidden>Name</things-i18n-msg>
+        <things-i18n-msg msgid="label.description" msg="{{labelDesc}}" auto hidden>Description</things-i18n-msg>
+        <things-i18n-msg msgid="label.group" msg="{{labelGroup}}" auto hidden>Group</things-i18n-msg>
+        <things-i18n-msg msgid="label.tag" msg="{{labelTag}}" auto hidden>Tag</things-i18n-msg>
 
-    <paper-dialog id="new">
-      <h2>[[title]]</h2>
-      
-      <paper-input label="[[labelName]]"
-                   value="{{name::input}}"
-                   auto-validate
-                   pattern="[a-zA-Z-0-9]*"
-                   error-message="letters & dash only!">
-      </paper-input>
+        <paper-dialog id="new">
+            <h2>[[title]]</h2>
 
-      <paper-textarea label="[[labelDesc]]"
-                      value="{{description::input}}">
-      </paper-textarea>
+            <paper-input label="[[labelName]]" value="{{name::input}}" auto-validate pattern="[a-zA-Z-0-9]*" error-message="letters & dash only!">
+            </paper-input>
 
-      <paper-dropdown-menu label="[[labelGroup]]"
-                           value="{{groupName}}"
-                           vertical-align="top"
-                           horizontal-align="left">
+            <paper-textarea label="[[labelDesc]]" value="{{description::input}}">
+            </paper-textarea>
 
-        <paper-menu class="dropdown-content" selected="{{selectedGroup(groupName)}}">
-          <template is="dom-repeat" items="{{showGroups}}">
-            <paper-item>{{item.name}}</paper-item>
-          </template>
-        </paper-menu>
-      </paper-dropdown-menu>
+            <paper-dropdown-menu label="[[labelGroup]]" value="{{groupName}}" vertical-align="top" horizontal-align="left">
 
-      <paper-input label="[[labelWidth]]" type="number" value="{{width::input}}"></paper-input>
-      <paper-input label="[[labelHeight]]" type="number" value="{{height::input}}"></paper-input>
-      <paper-input label="[[labelTag]]" type="string" value="{{tags::input}}"></paper-input>
+                <paper-menu class="dropdown-content" selected="{{selectedGroup(groupName)}}">
+                    <template is="dom-repeat" items="{{showGroups}}">
+                        <paper-item>{{item.name}}</paper-item>
+                    </template>
+                </paper-menu>
+            </paper-dropdown-menu>
+            <iron-localstorage name="my-app-storage" value="{{cartoon}}"></iron-localstorage>
+            <!-- <paper-input label="[[labelWidth]]" type="number" value="{{width::input}}"></paper-input>
+            <paper-input label="[[labelHeight]]" type="number" value="{{height::input}}"></paper-input> -->
+            <iron-localstorage name="setting.labelWidth" value="{{width}}">
+            </iron-localstorage>
+            <iron-localstorage name="setting.labelHeight" value="{{height}}">
+            </iron-localstorage>
+            <paper-input label="[[labelTag]]" type="string" value="{{tags::input}}"></paper-input>
 
-      <div class="buttons">
-        <paper-button dialog-dismiss><things-i18n-msg msgid="button.cancel" auto>Cancel</things-i18n-msg></paper-button>
-        <paper-button dialog-confirm autofocus><things-i18n-msg msgid="button.create" auto>Create</things-i18n-msg></paper-button>
-      </div>
-    <paper-dialog>
-  </template>
+            <div class="buttons">
+                <paper-button dialog-dismiss>
+                    <things-i18n-msg msgid="button.cancel" auto>Cancel</things-i18n-msg>
+                </paper-button>
+                <paper-button dialog-confirm autofocus>
+                    <things-i18n-msg msgid="button.create" auto>Create</things-i18n-msg>
+                </paper-button>
+            </div>
+            <paper-dialog>
+    </template>
 
-  <script>
-    (function() {
-      'use strict';
+    <script>
+        (function() {
+            'use strict';
 
-      Polymer({
-        is: 'things-new-dialog',
+            Polymer({
+                is: 'things-new-dialog',
 
-        properties: {
-          group: {
-            type: String,
-            notify: true,
-            observer: 'onGroupChanged'
-          },
-          groups: {
-            notify: true,
-            observer: 'onGroupsChanged'
-          },
+                properties: {
+                    group: {
+                        type: String,
+                        notify: true,
+                        observer: 'onGroupChanged'
+                    },
+                    groups: {
+                        notify: true,
+                        observer: 'onGroupsChanged'
+                    },
 
-          groupName: {
-            notify: true,
-          },
+                    groupName: {
+                        notify: true,
+                    },
 
-          showGroups: {
-            type: Array,
-            notify: true
-          },
+                    showGroups: {
+                        type: Array,
+                        notify: true
+                    },
 
-          showPlayGroup: {
-            notify: true
-          },
+                    showPlayGroup: {
+                        notify: true
+                    },
 
-          title: {
-            type: String
-          },
+                    title: {
+                        type: String
+                    },
 
-          unit: {
-            type: String
-          },
+                    unit: {
+                        type: String
+                    },
 
-          scale: {
-            type: Number,
-            value: 1
-          },
+                    scale: {
+                        type: Number,
+                        value: 1
+                    },
 
-          object: {
-            type: Object,
-            value: {},
-            notify: true,
-            computed: 'computeObject(name,description,group,width,height,tags)'
-          }
-        },
+                    object: {
+                        type: Object,
+                        value: {},
+                        notify: true,
+                        computed: 'computeObject(name,description,group,width,height,tags)'
+                    }
+                },
 
-        behaviors: [
-          Things.MsgBoxBehavior
-        ],
+                behaviors: [
+                    Things.MsgBoxBehavior
+                ],
 
-        listeners: {
+                listeners: {
 
-        },
+                },
 
-        created: function() {
-        },
+                created: function() {},
 
-        onGroupChanged(group) {
-          if(!this.groups)
-            return
+                onGroupChanged(group) {
+                    if (!this.groups)
+                        return
 
-          if (!group) return;
+                    if (!group) return;
 
-          for(var i = 0;i < this.groups.length;i++) {
-            if(this.groups[i].id == group) {
-              this.groupName = this.groups[i].name;
-              return i;
-            }
-          }
-        },
+                    for (var i = 0; i < this.groups.length; i++) {
+                        if (this.groups[i].id == group) {
+                            this.groupName = this.groups[i].name;
+                            return i;
+                        }
+                    }
+                },
 
-        onGroupsChanged(groups) {
-          if (!groups) {
-            return;
-          }
+                onGroupsChanged(groups) {
+                    if (!groups) {
+                        return;
+                    }
 
-          if (this.showPlayGroup) {
-            this.showGroups = groups;
-            return;
-          }
+                    if (this.showPlayGroup) {
+                        this.showGroups = groups;
+                        return;
+                    }
 
-          var showGroups = [];
-          groups.forEach(function(g) {
-            if (g.category !== 'PLAY') {
-              showGroups.push(g)
-            }
-          });
+                    var showGroups = [];
+                    groups.forEach(function(g) {
+                        if (g.category !== 'PLAY') {
+                            showGroups.push(g)
+                        }
+                    });
 
-          this.showGroups = showGroups;
+                    this.showGroups = showGroups;
 
-          this.onGroupChanged(this.group);
-        },
+                    this.onGroupChanged(this.group);
+                },
 
-        computeObject(name, description, group, width, height, tags) {
-          if (!group) return;
+                computeObject(name, description, group, width, height, tags) {
+                    if (!group) return;
 
-          var scale = this.scale;
+                    var scale = this.scale;
 
-          var model = {
-            unit: this.unit,
-            left: 0,
-            top: 0,
-            width: width * scale || 100,
-            height: height * scale || 100,
-            components: [],
-            links: [],
-            variables: []
-          }
+                    var model = {
+                        unit: this.unit,
+                        left: 0,
+                        top: 0,
+                        width: width * scale || 100,
+                        height: height * scale || 100,
+                        components: [],
+                        links: [],
+                        variables: []
+                    }
 
-          var groupId;
-          for(var i = 0;i < this.groups.length; i++) {
-            if(this.groups[i].name === this.groupName) {
-              groupId = this.groups[i].id;
-            }
-          }
+                    var groupId;
+                    for (var i = 0; i < this.groups.length; i++) {
+                        if (this.groups[i].name === this.groupName) {
+                            groupId = this.groups[i].id;
+                        }
+                    }
+                    return {
+                        name: name,
+                        description: description,
+                        label_group_id: groupId,
+                        width: width * scale || 1200,
+                        height: height * scale || 800,
+                        tags: tags,
+                        model: JSON.stringify(model),
+                        thumbnail: 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
+                    }
+                },
 
-          return {
-            name: name,
-            description: description,
-            label_group_id: groupId,
-            width: width * scale || 1200,
-            height: height * scale || 800,
-            tags: tags,
-            model: JSON.stringify(model),
-            thumbnail: 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
-          }
-        },
+                show: function() {
+                    var dialog = this.$["new"].open();
+                },
 
-        show: function() {
-          var dialog = this.$["new"].open();
-        },
+                selectedGroup: function(groupName) {
+                    if (!this.groups)
+                        return
 
-        selectedGroup: function(groupName) {
-          if(!this.groups)
-            return
+                    if (!groupName) return;
 
-          if (!groupName) return;
+                    for (var i = 0; i < this.groups.length; i++) {
+                        if (this.groups[i].name == groupName) {
+                            return i;
+                        }
+                    }
+                }
 
-          for(var i = 0;i < this.groups.length;i++) {
-            if(this.groups[i].name == groupName) {
-              return i;
-            }
-          }
-        }
+            });
+        })();
 
-      });
-    })();
-  </script>
+    </script>
 </dom-module>
