@@ -34,13 +34,17 @@
                 </paper-menu>
             </paper-dropdown-menu>
             <iron-localstorage name="my-app-storage" value="{{cartoon}}"></iron-localstorage>
+            
             <!-- <paper-input label="[[labelWidth]]" type="number" value="{{width::input}}"></paper-input>
             <paper-input label="[[labelHeight]]" type="number" value="{{height::input}}"></paper-input> -->
+            
             <iron-localstorage name="setting.labelWidth" value="{{width}}">
             </iron-localstorage>
+
             <iron-localstorage name="setting.labelHeight" value="{{height}}">
             </iron-localstorage>
-            <paper-input label="[[labelTag]]" type="string" value="{{tags::input}}"></paper-input>
+
+            <!--paper-input label="[[labelTag]]" type="string" value="{{tags::input}}"></paper-input-->
 
             <div class="buttons">
                 <paper-button dialog-dismiss>
@@ -101,7 +105,7 @@
                         type: Object,
                         value: {},
                         notify: true,
-                        computed: 'computeObject(name,description,group,width,height,tags)'
+                        computed: 'computeObject(name,description,group,width,height)'
                     }
                 },
 
@@ -141,7 +145,7 @@
 
                     var showGroups = [];
                     groups.forEach(function(g) {
-                        if (g.category !== 'PLAY') {
+                        if (!g.category || g.category !== 'PLAY') {
                             showGroups.push(g)
                         }
                     });
@@ -151,7 +155,7 @@
                     this.onGroupChanged(this.group);
                 },
 
-                computeObject(name, description, group, width, height, tags) {
+                computeObject(name, description, group, width, height) {
                     if (!group) return;
 
                     var scale = this.scale;
@@ -179,7 +183,6 @@
                         label_group_id: groupId,
                         width: width * scale || 1200,
                         height: height * scale || 800,
-                        tags: tags,
                         model: JSON.stringify(model),
                         thumbnail: 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
                     }
