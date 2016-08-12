@@ -19,7 +19,7 @@
         <paper-dialog id="new">
             <h2>[[title]]</h2>
 
-            <paper-input label="[[labelName]]" value="{{name::input}}" auto-validate pattern="[a-zA-Z-0-9]*" error-message="letters & dash only!">
+            <paper-input id="name-field" label="[[labelName]]" value="{{name::input}}" auto-validate pattern="[a-zA-Z-0-9]*" error-message="letters & dash only!">
             </paper-input>
 
             <paper-textarea label="[[labelDesc]]" value="{{description::input}}">
@@ -50,7 +50,7 @@
                 <paper-button dialog-dismiss>
                     <things-i18n-msg msgid="button.cancel" auto>Cancel</things-i18n-msg>
                 </paper-button>
-                <paper-button dialog-confirm autofocus>
+                <paper-button id="create-btn" dialog-confirm autofocus disabled>
                     <things-i18n-msg msgid="button.create" auto>Create</things-i18n-msg>
                 </paper-button>
             </div>
@@ -73,6 +73,11 @@
                     groups: {
                         notify: true,
                         observer: 'onGroupsChanged'
+                    },
+
+                    name: {
+                        type: String,
+                        observer: 'nameChanged'
                     },
 
                     groupName: {
@@ -115,6 +120,11 @@
 
                 listeners: {
 
+                },
+
+                nameChanged: function(name) {
+                    var isInvalid = this.$['name-field'].invalid;
+                    this.$['create-btn'].disabled = (!this.name || isInvalid);
                 },
 
                 created: function() {},
