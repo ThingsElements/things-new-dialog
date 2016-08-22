@@ -19,10 +19,10 @@
         <paper-dialog id="new">
             <h2>[[title]]</h2>
 
-            <paper-input id="name-field" label="[[labelName]]" value="{{name::input}}">
-            </paper-input>
+<!--             <paper-input id="name-field" label="[[labelName]]" value="{{name::input}}">
+            </paper-input> -->
 
-            <paper-textarea label="[[labelDesc]]" value="{{description::input}}">
+            <paper-textarea label="[[labelDesc]]" value="{{description::input}}" autofocus>
             </paper-textarea>
 
             <paper-dropdown-menu label="[[labelGroup]]" value="{{groupName}}" vertical-align="top" horizontal-align="left">
@@ -50,7 +50,7 @@
                 <paper-button dialog-dismiss>
                     <things-i18n-msg msgid="button.cancel" auto>Cancel</things-i18n-msg>
                 </paper-button>
-                <paper-button id="create-btn" dialog-confirm autofocus disabled>
+                <paper-button id="create-btn" dialog-confirm autofocus>
                     <things-i18n-msg msgid="button.create" auto>Create</things-i18n-msg>
                 </paper-button>
             </div>
@@ -76,8 +76,8 @@
                     },
 
                     name: {
-                        type: String,
-                        observer: 'nameChanged'
+                        type: String
+                        // ,observer: 'nameChanged'
                     },
 
                     groupName: {
@@ -110,7 +110,8 @@
                         type: Object,
                         value: {},
                         notify: true,
-                        computed: 'computeObject(name,description,group,width,height)'
+                        // computed: 'computeObject(name,description,group,width,height)'
+                        computed: 'computeObject(description,group,width,height)'
                     }
                 },
 
@@ -122,14 +123,14 @@
 
                 },
 
-                nameChanged: function(name) {
-                    var isInvalid = this.$['name-field'].invalid;
-                    this.$['create-btn'].disabled = (!this.name || isInvalid);
-                },
+                // nameChanged: function(name) {
+                //     var isInvalid = this.$['name-field'].invalid;
+                //     this.$['create-btn'].disabled = (!this.name || isInvalid);
+                // },
 
                 created: function() {},
 
-                onGroupChanged(group) {
+                onGroupChanged : function(group) {
                     if (!this.groups)
                         return
 
@@ -143,7 +144,7 @@
                     }
                 },
 
-                onGroupsChanged(groups) {
+                onGroupsChanged : function(groups) {
                     if (!groups) {
                         return;
                     }
@@ -165,7 +166,8 @@
                     this.onGroupChanged(this.group);
                 },
 
-                computeObject(name, description, group, width, height) {
+                // computeObject : function(name, description, group, width, height) {
+                computeObject : function(description, group, width, height) {
                     if (!group) return;
 
                     var scale = this.scale;
@@ -188,7 +190,7 @@
                         }
                     }
                     return {
-                        name: name,
+                        // name: name,
                         description: description,
                         label_group_id: groupId,
                         width: width * scale || 1200,
