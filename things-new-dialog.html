@@ -16,16 +16,16 @@
         <things-i18n-msg msgid="label.group" msg="{{labelGroup}}" auto hidden>Group</things-i18n-msg>
         <things-i18n-msg msgid="label.tag" msg="{{labelTag}}" auto hidden>Tag</things-i18n-msg>
 
-        <paper-dialog id="new">
+        <paper-dialog id="new" modal>
             <h2>[[title]]</h2>
 
 <!--             <paper-input id="name-field" label="[[labelName]]" value="{{name::input}}">
             </paper-input> -->
 
-            <paper-textarea label="[[labelDesc]]" value="{{description::input}}" autofocus>
+            <paper-textarea hidden=[[descDisabled]] label="[[labelDesc]]" value="{{description::input}}" autofocus>
             </paper-textarea>
 
-            <paper-dropdown-menu label="[[labelGroup]]" value="{{groupName}}" vertical-align="top" horizontal-align="left">
+            <paper-dropdown-menu hidden=[[groupDisabled]] label="[[labelGroup]]" value="{{groupName}}" vertical-align="top" horizontal-align="left">
 
                 <paper-menu class="dropdown-content" selected="{{selectedGroup(groupName)}}">
                     <template is="dom-repeat" items="{{showGroups}}">
@@ -111,7 +111,7 @@
                         value: {},
                         notify: true,
                         // computed: 'computeObject(name,description,group,width,height)'
-                        computed: 'computeObject(description,group,width,height)'
+                        computed: 'computeObject(description,group,width,height,groups)'
                     }
                 },
 
@@ -167,7 +167,7 @@
                 },
 
                 // computeObject : function(name, description, group, width, height) {
-                computeObject : function(description, group, width, height) {
+                computeObject : function(description, group, width, height, groups) {
                     if (!group) return;
 
                     var scale = this.scale;
