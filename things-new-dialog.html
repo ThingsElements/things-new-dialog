@@ -4,6 +4,7 @@
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="../paper-dialog/paper-dialog.html">
+<link rel="import" href="../iron-a11y-keys/iron-a11y-keys.html">
 
 <link rel="import" href="../things-i18n-msg/things-i18n-msg.html">
 
@@ -11,6 +12,13 @@
     <template>
         <style></style>
 
+        <iron-a11y-keys
+          id="keys"
+          keys="enter"
+          target="[[keyEnterTarget]]"
+          dialog-confirm
+          on-keys-pressed="confirm">
+        </iron-a11y-keys>
         <things-i18n-msg msgid="label.name" msg="{{labelName}}" auto hidden>Name</things-i18n-msg>
         <things-i18n-msg msgid="label.description" msg="{{labelDesc}}" auto hidden>Description</things-i18n-msg>
         <things-i18n-msg msgid="label.group" msg="{{labelGroup}}" auto hidden>Group</things-i18n-msg>
@@ -45,12 +53,6 @@
             </iron-localstorage>
 
             <!--paper-input label="[[labelTag]]" type="string" value="{{tags::input}}"></paper-input-->
-            <iron-a11y-keys
-              id="keys"
-              keys="enter"
-              target="[[target]]"
-              on-keys-pressed="_updatePressed">
-            </iron-a11y-keys>
             <div class="buttons">
                 <paper-button dialog-dismiss>
                     <things-i18n-msg msgid="button.cancel" auto>Cancel</things-i18n-msg>
@@ -83,6 +85,13 @@
                     name: {
                         type: String
                         // ,observer: 'nameChanged'
+                    },
+
+                    keyEnterTarget:{
+                        type: Object,
+                        value: function() {
+                          return this.root;
+                        }
                     },
 
                     groupName: {
@@ -127,7 +136,6 @@
                 listeners: {
 
                 },
-
                 // nameChanged: function(name) {
                 //     var isInvalid = this.$['name-field'].invalid;
                 //     this.$['create-btn'].disabled = (!this.name || isInvalid);
@@ -205,8 +213,10 @@
                     }
                 },
 
-                close: function() {
-                    var dialog = this.$["new"].close();
+                confirm: function(e) {
+                    var confirmed ={confirmed: true};
+                    this.fire('things-new-dialog-closed',confirmed);
+                    this.$["new"].close();
                 },
 
                 show: function() {
