@@ -11,22 +11,19 @@
 <dom-module id="things-new-dialog">
     <template>
         <style></style>
-
-        <iron-a11y-keys
-          id="keys"
-          keys="enter"
-          target="[[keyEnterTarget]]"
-          dialog-confirm
-          on-keys-pressed="confirm">
-        </iron-a11y-keys>
         <things-i18n-msg msgid="label.name" msg="{{labelName}}" auto hidden>Name</things-i18n-msg>
         <things-i18n-msg msgid="label.description" msg="{{labelDesc}}" auto hidden>Description</things-i18n-msg>
         <things-i18n-msg msgid="label.group" msg="{{labelGroup}}" auto hidden>Group</things-i18n-msg>
         <things-i18n-msg msgid="label.tag" msg="{{labelTag}}" auto hidden>Tag</things-i18n-msg>
 
         <paper-dialog id="new" no-cancel-on-outside-click with-backdrop>
+            <iron-a11y-keys
+              id="keys"
+              keys="enter"
+              target="[[keyEnterTarget]]"
+              on-keys-pressed="confirm">
+            </iron-a11y-keys>
             <h2>[[title]]</h2>
-
 <!--             <paper-input id="name-field" label="[[labelName]]" value="{{name::input}}">
             </paper-input> -->
 
@@ -57,7 +54,7 @@
                 <paper-button dialog-dismiss>
                     <things-i18n-msg msgid="button.cancel" auto>Cancel</things-i18n-msg>
                 </paper-button>
-                <paper-button id="create-btn" dialog-confirm autofocus>
+                <paper-button id="create-btn" dialog-confirm autofocus on-tap="confirm">
                     <things-i18n-msg msgid="button.save" auto>Save</things-i18n-msg>
                 </paper-button>
             </div>
@@ -88,10 +85,7 @@
                     },
 
                     keyEnterTarget:{
-                        type: Object,
-                        value: function() {
-                          return this.root;
-                        }
+                        type: Object
                     },
 
                     groupName: {
@@ -141,7 +135,9 @@
                 //     this.$['create-btn'].disabled = (!this.name || isInvalid);
                 // },
 
-                created: function() {},
+                ready: function() {
+                    this.keyEnterTarget = this;
+                },
 
                 onGroupChanged : function(group) {
                     if (!this.groups)
@@ -231,6 +227,7 @@
 
                     for (var i = 0; i < this.groups.length; i++) {
                         if (this.groups[i].name == groupName) {
+                            this.group = this.groups[i].id
                             return i;
                         }
                     }
