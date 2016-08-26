@@ -16,14 +16,14 @@
         <things-i18n-msg msgid="label.group" msg="{{labelGroup}}" auto hidden>Group</things-i18n-msg>
         <things-i18n-msg msgid="label.tag" msg="{{labelTag}}" auto hidden>Tag</things-i18n-msg>
 
-        <paper-dialog id="new" modal>
+        <paper-dialog id="new" no-cancel-on-outside-click with-backdrop>
             <h2>[[title]]</h2>
 
 <!--             <paper-input id="name-field" label="[[labelName]]" value="{{name::input}}">
             </paper-input> -->
 
-            <paper-textarea hidden=[[descDisabled]] label="[[labelDesc]]" value="{{description::input}}" autofocus>
-            </paper-textarea>
+            <paper-input hidden=[[descDisabled]] label="[[labelName]]" value="{{description::input}}" autofocus>
+            </paper-input>
 
             <paper-dropdown-menu hidden=[[groupDisabled]] label="[[labelGroup]]" value="{{groupName}}" vertical-align="top" horizontal-align="left">
 
@@ -45,16 +45,21 @@
             </iron-localstorage>
 
             <!--paper-input label="[[labelTag]]" type="string" value="{{tags::input}}"></paper-input-->
-
+            <iron-a11y-keys
+              id="keys"
+              keys="enter"
+              target="[[target]]"
+              on-keys-pressed="_updatePressed">
+            </iron-a11y-keys>
             <div class="buttons">
                 <paper-button dialog-dismiss>
                     <things-i18n-msg msgid="button.cancel" auto>Cancel</things-i18n-msg>
                 </paper-button>
                 <paper-button id="create-btn" dialog-confirm autofocus>
-                    <things-i18n-msg msgid="button.create" auto>Create</things-i18n-msg>
+                    <things-i18n-msg msgid="button.save" auto>Save</things-i18n-msg>
                 </paper-button>
             </div>
-            <paper-dialog>
+        <paper-dialog>
     </template>
 
     <script>
@@ -198,6 +203,10 @@
                         model: JSON.stringify(model),
                         thumbnail: 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
                     }
+                },
+
+                close: function() {
+                    var dialog = this.$["new"].close();
                 },
 
                 show: function() {
