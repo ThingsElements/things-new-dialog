@@ -10,7 +10,23 @@
 
 <dom-module id="things-new-dialog">
     <template>
-        <style></style>
+        <style>
+        paper-dropdown-menu{
+          min-width:87%
+        }
+        paper-dropdown-menu::shadow .dropdown-content{
+          min-width:240px;
+          overflow-x:hidden !important
+        }
+        paper-dropdown-menu paper-item{
+          border-bottom:1px solid rgba(0,0,0,.1);
+          font-size:15px;
+          color:var(--things-primary-text-color);
+        }
+        paper-button{
+          @apply(--things-button)
+        }
+        </style>
         <things-i18n-msg msgid="label.name" msg="{{labelName}}" auto hidden>Name</things-i18n-msg>
         <things-i18n-msg msgid="label.description" msg="{{labelDesc}}" auto hidden>Description</things-i18n-msg>
         <things-i18n-msg msgid="label.group" msg="{{labelGroup}}" auto hidden>Group</things-i18n-msg>
