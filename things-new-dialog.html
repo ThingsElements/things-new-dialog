@@ -33,12 +33,12 @@
         <things-i18n-msg msgid="label.tag" msg="{{labelTag}}" auto hidden>Tag</things-i18n-msg>
 
         <paper-dialog id="new" no-cancel-on-outside-click with-backdrop>
-            <iron-a11y-keys
+<!--             <iron-a11y-keys
               id="keys"
               keys="enter"
               target="[[keyEnterTarget]]"
               on-keys-pressed="confirm">
-            </iron-a11y-keys>
+            </iron-a11y-keys> -->
             <h2>[[title]]</h2>
 <!--             <paper-input id="name-field" label="[[labelName]]" value="{{name::input}}">
             </paper-input> -->
@@ -70,7 +70,7 @@
                 <paper-button dialog-dismiss>
                     <things-i18n-msg msgid="button.cancel" auto>Cancel</things-i18n-msg>
                 </paper-button>
-                <paper-button id="create-btn" dialog-confirm autofocus on-tap="confirm">
+                <paper-button id="create-btn" dialog-confirm autofocus key-bindings="[[keyBindings]]" key-event-target="[[keyEnterTarget]]" on-tap="confirm">
                     <things-i18n-msg msgid="button.save" auto>Save</things-i18n-msg>
                 </paper-button>
             </div>
@@ -136,6 +136,18 @@
                         notify: true,
                         // computed: 'computeObject(name,description,group,width,height)'
                         computed: 'computeObject(description,group,width,height,groups)'
+                    },
+                    keyBindings:{
+                        type: Object,
+                        value: function(){
+                          return {'enter':'confirm'}
+                        }
+                    },
+                    keyEnterTarget:{
+                        type: Object,
+                        value: function(){
+                          return this;
+                        }
                     }
                 },
 
