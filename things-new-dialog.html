@@ -24,7 +24,13 @@
           color:var(--things-primary-text-color);
         }
         paper-button{
-          @apply(--things-button)
+          @apply(--things-button);
+        }
+        paper-button[dialog-confirm]{
+          @apply(--things-button-important);
+        }
+        .buttons{
+          padding-right:24px
         }
         </style>
         <things-i18n-msg msgid="label.name" msg="{{labelName}}" auto hidden>Name</things-i18n-msg>
