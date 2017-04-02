@@ -55,10 +55,10 @@
                 </paper-menu>
             </paper-dropdown-menu>
             <iron-localstorage name="my-app-storage" value="{{cartoon}}"></iron-localstorage>
-            
+
             <!-- <paper-input label="[[labelWidth]]" type="number" value="{{width::input}}"></paper-input>
             <paper-input label="[[labelHeight]]" type="number" value="{{height::input}}"></paper-input> -->
-            
+
             <iron-localstorage name="setting.labelWidth" value="{{width}}">
             </iron-localstorage>
 
@@ -201,8 +201,8 @@
                         unit: this.unit,
                         left: 0,
                         top: 0,
-                        width: width * scale || 100,
-                        height: height * scale || 100,
+                        width: (width || 100) * scale || 100,
+                        height: (height || 100) * scale || 100,
                         components: [],
                         links: [],
                         variables: []
@@ -218,8 +218,8 @@
                         // name: name,
                         description: description,
                         group_id: groupId,
-                        width: width * scale || 1200,
-                        height: height * scale || 800,
+                        width: (width || 100) * scale || 100,
+                        height: (height || 100) * scale || 100,
                         model: JSON.stringify(model),
                         thumbnail: 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
                     }
