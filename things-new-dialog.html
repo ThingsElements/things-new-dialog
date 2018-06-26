@@ -19,10 +19,7 @@ Copyright © HatioLab Inc. All rights reserved.
         paper-dropdown-menu{
           min-width:87%
         }
-        paper-dropdown-menu::shadow .dropdown-content{
-          min-width:240px;
-          overflow-x:hidden !important
-        }
+
         paper-dropdown-menu paper-item{
           border-bottom:1px solid rgba(0,0,0,.1);
           font-size:15px;
@@ -51,13 +48,13 @@ Copyright © HatioLab Inc. All rights reserved.
             <paper-input hidden=[[descDisabled]] label="[[labelName]]" value="{{description::input}}" autofocus>
             </paper-input>
 
-            <paper-dropdown-menu hidden=[[groupDisabled]] label="[[labelGroup]]" value="{{groupName}}" vertical-align="top" horizontal-align="left">
+            <paper-dropdown-menu hidden=[[groupDisabled]] label="[[labelGroup]]" value="{{groupName}}" required>
 
-                <paper-menu class="dropdown-content" selected="{{selectedGroup(groupName)}}">
+                <paper-listbox class="dropdown-content" selected="{{selectedGroup(groupName)}}">
                     <template is="dom-repeat" items="{{showGroups}}">
                         <paper-item>{{item.name}}</paper-item>
                     </template>
-                </paper-menu>
+                </paper-listbox>
             </paper-dropdown-menu>
             <iron-localstorage name="my-app-storage" value="{{cartoon}}"></iron-localstorage>
 
