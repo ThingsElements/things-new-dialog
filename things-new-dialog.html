@@ -20,6 +20,17 @@ Copyright © HatioLab Inc. All rights reserved.
           min-width:87%
         }
 
+        paper-dropdown-menu::shadow paper-menu-button iron-dropdown {
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100%;
+        }
+
+        paper-dropdown-menu::shadow paper-menu-button .dropdown-content {
+            max-width: initial !important;
+        }
+
         paper-dropdown-menu paper-item{
           border-bottom:1px solid rgba(0,0,0,.1);
           font-size:15px;
@@ -48,7 +59,7 @@ Copyright © HatioLab Inc. All rights reserved.
             <paper-input hidden=[[descDisabled]] label="[[labelName]]" value="{{description::input}}" autofocus>
             </paper-input>
 
-            <paper-dropdown-menu hidden=[[groupDisabled]] label="[[labelGroup]]" value="{{groupName}}" required>
+            <paper-dropdown-menu hidden=[[groupDisabled]] label="[[labelGroup]]" value="{{groupName}}"  horizontal-align='left' required>
 
                 <paper-listbox class="dropdown-content" selected="{{selectedGroup(groupName)}}">
                     <template is="dom-repeat" items="{{showGroups}}">
